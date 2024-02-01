@@ -11,6 +11,9 @@ export const getUserSigninCookie = async (user: object) => {
   return `${JWT_NAME}=${jwt}; Path=/; Max-Age=${exp}; SameSite=Strict; HttpOnly`;
 };
 
+export const signoutCookie = () =>
+  `${JWT_NAME}=; Path=/; Max-Age=1; SameSite=Strict; HttpOnly`;
+
 export const checkUserCookie = async (jwt: string) => {
   try {
     const resp = await validateJWT(jwt);

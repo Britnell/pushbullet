@@ -9,8 +9,6 @@ if (!cookieUser) return Astro.redirect("/user/signin");
 
 const [user] = await getCookieUser(cookieUser.userid, cookieUser.email);
 if (!user) return Astro.redirect("/user/signin");
-
-console.log(user);
 ---
 
 <!doctype html>
@@ -24,5 +22,6 @@ console.log(user);
     <h1>APP</h1>
     <p>User #{user.userid} = {user.email}</p>
     <p>xx</p>
+    <a href="/api/user/logout">Sign out</a>
   </body>
 </html>

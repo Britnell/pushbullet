@@ -1,0 +1,25 @@
+{
+  "name": "pushbullet",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.4.1",
+    "@astrojs/node": "^8.2.0",
+    "@libsql/client": "^0.4.3",
+    "astro": "^4.3.0",
+    "bcrypt": "^5.1.1",
+    "drizzle-orm": "^0.29.3",
+    "jose": "^5.2.0",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2"
+  }
+}

@@ -43,11 +43,11 @@ function AppBits() {
               return (
                 <Fragment key={b}>
                   {showDate && (
-                    <p className="  mt-10 mb-6 text-gray-500 text-center  border-b-2 border-gray-300 pb-2">
+                    <p className="  mt-10 mb-4 text-gray-500 text-center  border-b-2 border-gray-300 pb-2">
                       {date}
                     </p>
                   )}
-                  <div className="mb-6 group flex items-center  ">
+                  <div className="mb-4 group flex items-center  ">
                     <li className="  bg-blue-200 p-2 pl-6 pr-6 rounded-xl w-fit">
                       {bit.text}{" "}
                       <span className=" ml-6 text-[0.7em]">
@@ -87,7 +87,10 @@ function AppBits() {
             value={input}
             onChange={(ev) => setInput(ev.target.value)}
             onKeyDown={(ev) => {
-              if (ev.code === "Enter") submit();
+              if (ev.code === "Enter") {
+                ev.preventDefault();
+                submit();
+              }
             }}
           />
           <button className=" bg-blue-200 rounded-full px-4 py-1">

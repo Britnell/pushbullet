@@ -35,13 +35,13 @@ function AppBits() {
       <div ref={scrollRef} className=" grow  overflow-auto">
         {query.data && (
           <ul>
-            {query.data.map((bit, b) => {
+            {query.data.map((bit) => {
               // only render new dates
               const date = bit.date.split(" ")[0];
               const showDate = date !== lastDate;
               lastDate = date;
               return (
-                <Fragment key={b}>
+                <Fragment key={bit.id}>
                   {showDate && (
                     <p className="  mt-10 mb-4 text-gray-500 text-center  border-b-2 border-gray-300 pb-2">
                       {date}
@@ -115,8 +115,6 @@ const RenderHyperlinks = ({ text }: { text: string }) => {
     links.push({ start, end });
   }
 
-  console.log({ links });
-
   return (
     <span>
       {links.length === 0 ? (
@@ -129,7 +127,7 @@ const RenderHyperlinks = ({ text }: { text: string }) => {
           const afterLink = i === links.length - 1 && text.slice(match.end);
 
           return (
-            <>
+            <Fragment key={i}>
               {beforeLink}
               <a
                 className=" underline"
@@ -140,7 +138,7 @@ const RenderHyperlinks = ({ text }: { text: string }) => {
                 {link}
               </a>
               {afterLink}
-            </>
+            </Fragment>
           );
         })
       )}

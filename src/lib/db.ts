@@ -19,6 +19,22 @@ export const getUserBits = (userid: string) =>
 
 export const createNewBit = (userid: number, text: string) =>
   turso
+    .batch([
+      {
+        sql: `insert into bits (userid, text)
+              values (?, ?)`,
+        args: [userid, text],
+      },
+      {
+        sql: `SELECT id,text,date from bits 
+              where rowid = last_insert_rowid();`,
+        args: [],
+      },
+    ])
+    .then((resp) => resp[1].rows);
+
+export const createNewBitold = (userid: number, text: string) =>
+  turso
     .execute({
       sql: `insert into bits (userid, text)
             values (?, ?)`,

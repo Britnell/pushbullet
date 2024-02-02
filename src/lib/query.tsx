@@ -13,7 +13,13 @@ export const QueryProvidor = ({ children }: { children: React.ReactNode }) => (
 );
 
 export const useBits = () =>
-  useQuery<Bits[], string>("bits", fetchUserBits, {
+  useQuery<Bits[], string>({
+    queryKey: "bits",
+    queryFn: () =>
+      fetch("/api/bits/user").then(async (res) => {
+        if (res.ok) return res.json();
+        throw new Error(await res.text());
+      }),
     // staleTime: Infinity,
     // cacheTime: Infinity,
     initialData: () => {
@@ -28,50 +34,36 @@ export const useBits = () =>
 export const useCreator = () =>
   useMutation({
     mutationKey: "create",
-    mutationFn: fetchCreateBit,
-    onSuccess: (_, data) => {
+    mutationFn: (text: string) =>
+      fetch("/api/bits/new", {
+        method: "POST",
+        body: text,
+      }).then(async (res) => {
+        if (res.ok) return res.json();
+        throw new Error(await res.text());
+      }),
+    onSuccess: (resp) => {
       const prev = queryClient.getQueryData<Bits[]>("bits") ?? [];
-      const newBit = {
-        text: data,
-        date: new Date().toISOString().replace("T", " ").slice(0, -5),
-      };
-      queryClient.setQueryData("bits", () => [...prev, newBit]);
+      queryClient.setQueryData("bits", () => [...prev, resp]);
     },
   });
 
 export const useDeletor = () =>
   useMutation({
     mutationKey: "delete",
-    mutationFn: fetchDeleteBit,
+    mutationFn: (bitid: string | number) =>
+      fetch("/api/bits/delete", {
+        method: "POST",
+        body: bitid.toString(),
+      }).then(async (res) => {
+        if (res.ok) return res.text();
+        throw new Error(await res.text());
+      }),
     onSuccess: (_, data) => {
       const prev = queryClient.getQueryData<Bits[]>("bits") ?? [];
       const without = prev.filter((bit) => bit.id !== data);
       queryClient.setQueryData("bits", () => without);
     },
-  });
-
-const fetchUserBits = () =>
-  fetch("/api/bits/user").then(async (res) => {
-    if (res.ok) return res.json();
-    throw new Error(await res.text());
-  });
-
-const fetchDeleteBit = (bitid: string | number) =>
-  fetch("/api/bits/delete", {
-    method: "POST",
-    body: bitid.toString(),
-  }).then(async (res) => {
-    if (res.ok) return res.text();
-    throw new Error(await res.text());
-  });
-
-const fetchCreateBit = (text: string) =>
-  fetch("/api/bits/new", {
-    method: "POST",
-    body: text,
-  }).then(async (res) => {
-    if (res.ok) return res.text();
-    throw new Error(await res.text());
   });
 
 const localKey = "pushbullet-cache";

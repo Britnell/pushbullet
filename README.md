@@ -6,3 +6,4 @@ This is a fullstack astro app, because there is no pushbullet on iOS, and as pra
 - turso SQLite
 - React
 - react-query
+- PWA & sharing api

@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { hashPassword, signupUser } from "../../../lib/auth";
+import { signupUser } from "../../../lib/auth";
 
 export const GET: APIRoute = () => {
   return new Response("please POST - ok love you bye", {

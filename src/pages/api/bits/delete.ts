@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { checkUserCookie, getCookieUser } from "../../../lib/auth";
-import { createNewBit, deleteUserBit } from "../../../lib/db";
+import { deleteUserBit } from "../../../lib/db";
 import { cookieParser } from "../../../lib/helper";
 
 const JWT_NAME = import.meta.env.JWT_NAME;

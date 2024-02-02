@@ -87,7 +87,7 @@ function AppBits() {
             value={input}
             onChange={(ev) => setInput(ev.target.value)}
             onKeyDown={(ev) => {
-              if (ev.code === "Enter") {
+              if (ev.code === "Enter" && !ev.shiftKey) {
                 ev.preventDefault();
                 submit();
               }

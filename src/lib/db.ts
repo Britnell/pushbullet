@@ -7,8 +7,8 @@ export type Bits = {
 export const createNewBit = (userid: number, text: string) =>
   turso
     .execute({
-      sql: `INSERT INTO bits (userid, text)
-        VALUES (?, ?)`,
+      sql: `insert into bits (userid, text)
+        values (?, ?)`,
       args: [userid, text],
     })
     .then((resp) => resp.rowsAffected === 1);
@@ -16,7 +16,7 @@ export const createNewBit = (userid: number, text: string) =>
 export const getUserBits = (userid: string) =>
   turso
     .execute({
-      sql: `select text,date 
+      sql: `select id,text,date
           from bits 
           where userid = ?
           order by date ASC`,

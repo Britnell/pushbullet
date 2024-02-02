@@ -31,6 +31,7 @@
     "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2"
+    "@types/bcryptjs": "^2.4.6",
+    "@vite-pwa/astro": "^0.2.0"
   }
 }

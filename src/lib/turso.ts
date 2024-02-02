@@ -1,4 +1,4 @@
-import { createClient } from "@libsql/client";
+import { createClient } from "@libsql/client/web";
 
 export const turso = createClient({
   url: import.meta.env.TURSO_URL,

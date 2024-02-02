@@ -56,17 +56,37 @@ function AppBits() {
     create.mutate(text);
   };
 
+  let lastDate = "";
   return (
     <div className=" h-[calc(100dvh-64px)] flex flex-col ">
       <h2>Your Bits</h2>
       <div className=" grow  overflow-auto">
         {query.data && (
-          <ul className=" flex flex-col gap-8 ">
-            {query.data.map((bit, b) => (
-              <li key={b} className="  bg-blue-200 p-2 px-10 rounded-xl w-fit">
-                {bit.text} - <span className=" ">{bit.date}</span>
-              </li>
-            ))}
+          <ul className=" flex flex-col ">
+            {query.data.map((bit, b) => {
+              // only render new dates
+              const date = bit.date.split(" ")[0];
+              const showDate = date !== lastDate;
+              lastDate = date;
+              return (
+                <>
+                  {showDate && (
+                    <p
+                      key={`date-${b}`}
+                      className=" mt-10 mb-6 text-gray-500 text-center "
+                    >
+                      {bit.date}
+                    </p>
+                  )}
+                  <li
+                    key={b}
+                    className=" mb-6 bg-blue-200 p-2 px-10 rounded-xl w-fit"
+                  >
+                    {bit.text} - <span className=" ">{bit.date}</span>
+                  </li>
+                </>
+              );
+            })}
           </ul>
         )}
         {query.error && (

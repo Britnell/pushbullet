@@ -1,4 +1,4 @@
-import * as bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { turso } from "./turso";
 import { SignJWT, jwtVerify } from "jose";
 
@@ -8,11 +8,13 @@ const JWT_SECRET = import.meta.env.JWT_SECRET;
 export const getUserSigninCookie = async (user: object) => {
   const jwt = await createJWT(user);
   const exp = 60 * 60 * 24 * 7;
-  return `${JWT_NAME}=${jwt}; Path=/; Max-Age=${exp}; SameSite=Strict; HttpOnly`;
+  return makeCookie(jwt, exp);
 };
 
-export const signoutCookie = () =>
-  `${JWT_NAME}=; Path=/; Max-Age=1; SameSite=Strict; HttpOnly`;
+export const signoutCookie = () => makeCookie("", 1);
+
+const makeCookie = (value: string, age: string | number) =>
+  `${JWT_NAME}=${value}; Max-Age=${age}; Path=/;  SameSite=Strict; HttpOnly`;
 
 export const checkUserCookie = async (jwt: string) => {
   try {
@@ -56,10 +58,10 @@ export const getCookieUser = (userid: number, email: string) =>
     })
     .then((resp) => resp.rows);
 
-export const hashPassword = (pw: string) => bcrypt.hash(pw, 10);
+export const hashPassword = (pw: string) => bcrypt.hashSync(pw, 10);
 
 export const checkPassword = (pw: string, hashed: string) =>
-  bcrypt.compare(pw, hashed);
+  bcrypt.compareSync(pw, hashed);
 
 export const signupUser = async ({
   email,
@@ -70,7 +72,7 @@ export const signupUser = async ({
   password: string;
   username: string;
 }) => {
-  const hashed = await hashPassword(password);
+  const hashed = hashPassword(password);
   if (!hashed) return null;
 
   return turso.execute({

@@ -28,7 +28,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
   if (!hash) return redirect("/user/login");
 
-  const match = await checkPassword(password, hash.toString());
+  const match = checkPassword(password, hash.toString());
 
   if (!match) return redirect("/user/login");
 

@@ -49,7 +49,7 @@ function AppBits() {
                   )}
                   <div className="mb-4 group flex items-center  ">
                     <li className="  bg-blue-200 p-2 pl-6 pr-6 rounded-xl w-fit">
-                      {bit.text}{" "}
+                      <RenderHyperlinks text={bit.text} />{" "}
                       <span className=" ml-6 text-[0.7em]">
                         {bit.date.slice(-8)}
                       </span>
@@ -101,3 +101,46 @@ function AppBits() {
     </div>
   );
 }
+
+const urlRegex =
+  /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/g;
+
+const RenderHyperlinks = ({ text }: { text: string }) => {
+  const links: Array<{ start: number; end: number }> = [];
+
+  for (let match of text.matchAll(urlRegex)) {
+    if (match.index === undefined) return;
+    const start = match.index;
+    const end = start + match[0].length;
+    links.push({ start, end });
+  }
+
+  return (
+    <>
+      {links.map(({ start, end }, i) => {
+        const link = text.slice(start, end);
+        let before = null;
+        if (i === 0) before = text.slice(0, start);
+        else {
+          before = text.slice(links[i - 1].end, start);
+        }
+        const after = i === links.length - 1 && text.slice(end);
+
+        return (
+          <>
+            {before}
+            <a
+              className=" underline"
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {link}
+            </a>
+            {after}
+          </>
+        );
+      })}
+    </>
+  );
+};

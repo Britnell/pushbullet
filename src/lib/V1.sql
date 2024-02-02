@@ -19,7 +19,16 @@ CREATE TABLE users (
     created DATE DEFAULT CURRENT_DATE
 );
 
-INSERT INTO users (userid, email, password, username, created) VALUES
-(1, 'demo1@example.com', 'password_hash', 'Demo User 1', CURRENT_DATE),
-(2, 'demo2@example.com', 'password_hash', 'Demo User 2', CURRENT_DATE),
-(3, 'demo3@example.com', 'password_hash', 'Demo User 3', CURRENT_DATE);
+-- INSERT INTO users (userid, email, password, username, created) VALUES
+-- (1, 'demo1@example.com', 'password_hash', 'Demo User 1', CURRENT_DATE),
+-- (2, 'demo2@example.com', 'password_hash', 'Demo User 2', CURRENT_DATE),
+-- (3, 'demo3@example.com', 'password_hash', 'Demo User 3', CURRENT_DATE);
+
+
+CREATE TABLE bits (
+    userid INTEGER,
+    date TEXT DEFAULT CURRENT_TIMESTAMP,
+    text TEXT,
+    url TEXT,
+    FOREIGN KEY(userid) REFERENCES users(userid)
+);

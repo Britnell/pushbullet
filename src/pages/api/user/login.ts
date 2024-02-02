@@ -1,7 +1,6 @@
 import type { APIRoute } from "astro";
 import {
   checkPassword,
-  createJWT,
   getEmailUser,
   getUserSigninCookie,
 } from "../../../lib/auth";
@@ -22,23 +21,18 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
   const resp = await getEmailUser(email);
 
-  if (resp.rows.length === 0) return redirect("/user/signin");
+  if (resp.rows.length === 0) return redirect("/user/login");
 
   const userid = resp.rows[0].userid;
   const hash = resp.rows[0].password;
 
-  console.log({ userid, email, password });
-
-  if (!hash) return redirect("/user/signin");
+  if (!hash) return redirect("/user/login");
 
   const match = await checkPassword(password, hash.toString());
 
-  if (!match) return redirect("/user/signin");
-
-  console.log({ hash, match });
+  if (!match) return redirect("/user/login");
 
   const cookie = await getUserSigninCookie({ userid, email });
-  console.log({ cookie });
 
   return new Response(null, {
     status: 301,
@@ -48,6 +42,6 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     },
   });
 
-  return redirect("/user/signin");
+  return redirect("/user/login");
   return new Response("never");
 };

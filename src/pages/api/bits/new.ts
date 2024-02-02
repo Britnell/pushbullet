@@ -25,11 +25,13 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   if (!cookieUser) return redirect("/app");
 
   const { userid, email } = cookieUser;
-  console.log({ cookieUser });
 
   const [user] = await getCookieUser(userid, email);
   if (!user) return redirect("/app");
 
   const success = await createNewBit(userid, text);
-  return new Response(success ? "ok" : "err");
+
+  if (success) return new Response("ok", { status: 200 });
+
+  return new Response("error", { status: 500 });
 };

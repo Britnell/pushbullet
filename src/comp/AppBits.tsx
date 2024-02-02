@@ -1,5 +1,10 @@
 import type { FormEvent } from "react";
-import { useQuery, QueryClient, QueryClientProvider } from "react-query";
+import {
+  useQuery,
+  QueryClient,
+  QueryClientProvider,
+  useMutation,
+} from "react-query";
 
 const queryClient = new QueryClient();
 
@@ -16,31 +21,43 @@ export type Bits = {
   date: string;
 };
 
-const fetchUserBits = () =>
-  fetch("/api/bits/user").then(async (res) =>
-    res.ok ? res.json() : { error: await res.text() }
-  );
-
 function AppBits() {
-  const query = useQuery("bits", fetchUserBits);
+  const query = useQuery<Bits[], string>("bits", fetchUserBits, {
+    // staleTime: Infinity,
+    // cacheTime: Infinity,
+    initialData: () => {
+      const local = loadFromLocalStorage();
+      console.log({ local });
+      return local ?? [];
+    },
+    onSuccess: (data) => {
+      saveToLocalStorage(data);
+    },
+  });
 
-  console.log(query);
-  return (
-    <div>
-      <h2>Your Bits</h2>
-      <ul>
-        {query.data?.map((bit) => (
-          <li>
-            {bit.text} - <span className=" ">{bit.date}</span>
-          </li>
-        ))}
-      </ul>
-      <NewBit />
-    </div>
-  );
-}
+  const create = useMutation({
+    mutationKey: "create",
+    mutationFn: fetchCreateBit,
+    onSuccess: (resp, data) => {
+      const prev = queryClient.getQueryData<Bits[]>("bits");
+      console.log({ prev });
 
-const NewBit = () => {
+      const newBit = {
+        text: data,
+        date: new Date().toISOString().replace("T", " ").slice(0, -5),
+      };
+      console.log(newBit);
+
+      // Optimistically update to the new value
+      queryClient.setQueryData("bits", () => {
+        const ray = [...(prev ?? []), newBit];
+        console.log({ ray });
+
+        return ray;
+      });
+    },
+  });
+
   const submit = (ev: FormEvent) => {
     ev.preventDefault();
 
@@ -49,21 +66,70 @@ const NewBit = () => {
     if (text === "") return;
 
     console.log({ text });
-
-    fetch("/api/bits/new", {
-      method: "POST",
-      body: text,
-    })
-      .then((resp) => resp.text())
-      .then(console.log);
+    create.mutate(text);
   };
+
+  console.log(query);
 
   return (
     <div>
+      <h2>Your Bits</h2>
+      {query.data && (
+        <ul>
+          {query.data.map((bit, b) => (
+            <li key={b}>
+              {bit.text} - <span className=" ">{bit.date}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {query.error && (
+        <div>
+          <p>ERROR - {query.error}</p>
+        </div>
+      )}
+      {/* <NewBit /> */}
       <form onSubmit={submit}>
         <textarea name="text" rows={3} />
         <button>Submit</button>
       </form>
     </div>
   );
+}
+
+const fetchUserBits = () =>
+  fetch("/api/bits/user").then(async (res) => {
+    if (res.ok) return res.json();
+    throw new Error(await res.text());
+  });
+
+const fetchCreateBit = (text: string) =>
+  fetch("/api/bits/new", {
+    method: "POST",
+    body: text,
+  }).then(async (res) => {
+    if (res.ok) return res.text();
+    throw new Error(await res.text());
+  });
+
+const localKey = "pushbullet-cache";
+
+const loadFromLocalStorage = () => {
+  if (typeof window === "undefined") return null;
+  const str = localStorage.getItem(localKey);
+  if (!str) return null;
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    return null;
+  }
+};
+
+const saveToLocalStorage = (data: object | null) => {
+  if (typeof window === "undefined") return null;
+  if (data === null) {
+    localStorage.removeItem(localKey);
+    return;
+  }
+  localStorage.setItem(localKey, JSON.stringify(data));
 };

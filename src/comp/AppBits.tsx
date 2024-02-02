@@ -38,23 +38,13 @@ function AppBits() {
   const create = useMutation({
     mutationKey: "create",
     mutationFn: fetchCreateBit,
-    onSuccess: (resp, data) => {
+    onSuccess: (_, data) => {
       const prev = queryClient.getQueryData<Bits[]>("bits");
-      console.log({ prev });
-
       const newBit = {
         text: data,
         date: new Date().toISOString().replace("T", " ").slice(0, -5),
       };
-      console.log(newBit);
-
-      // Optimistically update to the new value
-      queryClient.setQueryData("bits", () => {
-        const ray = [...(prev ?? []), newBit];
-        console.log({ ray });
-
-        return ray;
-      });
+      queryClient.setQueryData("bits", () => [...(prev ?? []), newBit]);
     },
   });
 

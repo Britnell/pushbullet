@@ -18,7 +18,6 @@ export const GET: APIRoute = async ({ request }) => {
   if (!cookieUser) return error;
 
   const { userid, email } = cookieUser;
-  console.log({ cookieUser });
 
   const [user] = await getCookieUser(userid, email);
   if (!user) return error;

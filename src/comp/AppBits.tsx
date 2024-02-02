@@ -1,18 +1,37 @@
+import type { FormEvent } from "react";
+import { useQuery, QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
+
+export default function Wrapper() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AppBits />
+    </QueryClientProvider>
+  );
+}
+
 export type Bits = {
   text: string;
   date: string;
 };
 
-function AppBits({ data = [] }: { data?: Bits[] }) {
-  console.log(" APP", data);
+const fetchUserBits = () =>
+  fetch("/api/bits/user").then(async (res) =>
+    res.ok ? res.json() : { error: await res.text() }
+  );
 
+function AppBits() {
+  const query = useQuery("bits", fetchUserBits);
+
+  console.log(query);
   return (
     <div>
       <h2>Your Bits</h2>
       <ul>
-        {data.map((bit) => (
+        {query.data?.map((bit) => (
           <li>
-            {bit.text} - <span class=" ">{bit.date}</span>
+            {bit.text} - <span className=" ">{bit.date}</span>
           </li>
         ))}
       </ul>
@@ -22,7 +41,7 @@ function AppBits({ data = [] }: { data?: Bits[] }) {
 }
 
 const NewBit = () => {
-  const submit = (ev: SubmitEvent) => {
+  const submit = (ev: FormEvent) => {
     ev.preventDefault();
 
     const form = ev.target as HTMLFormElement;
@@ -42,11 +61,9 @@ const NewBit = () => {
   return (
     <div>
       <form onSubmit={submit}>
-        <input name="text" rows={3} />
+        <textarea name="text" rows={3} />
         <button>Submit</button>
       </form>
     </div>
   );
 };
-
-export default AppBits;

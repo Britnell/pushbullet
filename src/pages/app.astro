@@ -12,7 +12,7 @@ if (!cookieUser) return Astro.redirect("/user/login");
 const [user] = await getCookieUser(cookieUser.userid, cookieUser.email);
 if (!user || !user.userid) return Astro.redirect("/user/login");
 
-const userBits = await getUserBits(user.userid.toString());
+// const userBits = await getUserBits(user.userid.toString());
 ---
 
 <!doctype html>
@@ -25,7 +25,7 @@ const userBits = await getUserBits(user.userid.toString());
   <body>
     <h1>Pushbullet</h1>
     <a href="/api/user/logout">Sign out</a>
-    <AppBits data={userBits} client:load />
+    <AppBits client:load />
     <!-- <form method="POST" action="/api/bits/new">
       <input type="text" name="text" />
       <button>Submit</button>

@@ -57,25 +57,35 @@ function AppBits() {
   };
 
   return (
-    <div>
+    <div className=" h-[calc(100dvh-64px)] flex flex-col ">
       <h2>Your Bits</h2>
-      {query.data && (
-        <ul>
-          {query.data.map((bit, b) => (
-            <li key={b}>
-              {bit.text} - <span className=" ">{bit.date}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-      {query.error && (
-        <div>
-          <p>ERROR - {query.error}</p>
-        </div>
-      )}
-      <form onSubmit={submit}>
-        <textarea name="text" rows={3} />
-        <button>Submit</button>
+      <div className=" grow  overflow-auto">
+        {query.data && (
+          <ul className=" flex flex-col gap-8 ">
+            {query.data.map((bit, b) => (
+              <li key={b} className="  bg-blue-200 p-2 px-10 rounded-xl w-fit">
+                {bit.text} - <span className=" ">{bit.date}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+        {query.error && (
+          <div>
+            <p>ERROR - {query.error}</p>
+          </div>
+        )}
+      </div>
+      <form
+        onSubmit={submit}
+        className=" pt-1 px-8 flex flex-wrap items-start gap-3 shadow-[0px_0px_10px_rgba(0,0,0,0.3)]"
+      >
+        <textarea
+          className=" border border-gray-300 rounded-sm px-2 py-1 w-full max-w-[600px]"
+          name="text"
+          rows={3}
+          placeholder="Your new Bit..."
+        />
+        <button className=" bg-blue-200 rounded-full px-4 py-1">Submit</button>
       </form>
     </div>
   );

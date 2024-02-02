@@ -1,53 +1,20 @@
 import { useRef, type FormEvent, useLayoutEffect, Fragment } from "react";
-import {
-  useQuery,
-  QueryClient,
-  QueryClientProvider,
-  useMutation,
-} from "react-query";
-
-const queryClient = new QueryClient();
+import { QueryProvidor, useBits, useCreator, useDeletor } from "../lib/query";
 
 export default function Wrapper() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryProvidor>
       <AppBits />
-    </QueryClientProvider>
+    </QueryProvidor>
   );
 }
-
-export type Bits = {
-  text: string;
-  date: string;
-};
 
 function AppBits() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const query = useQuery<Bits[], string>("bits", fetchUserBits, {
-    // staleTime: Infinity,
-    // cacheTime: Infinity,
-    initialData: () => {
-      const local = loadFromLocalStorage();
-      return local ?? [];
-    },
-    onSuccess: (data) => {
-      saveToLocalStorage(data);
-    },
-  });
-
-  const creator = useMutation({
-    mutationKey: "create",
-    mutationFn: fetchCreateBit,
-    onSuccess: (_, data) => {
-      const prev = queryClient.getQueryData<Bits[]>("bits");
-      const newBit = {
-        text: data,
-        date: new Date().toISOString().replace("T", " ").slice(0, -5),
-      };
-      queryClient.setQueryData("bits", () => [...(prev ?? []), newBit]);
-    },
-  });
+  const query = useBits();
+  const creator = useCreator();
+  const deletor = useDeletor();
 
   const submit = (ev: FormEvent) => {
     ev.preventDefault();
@@ -88,7 +55,10 @@ function AppBits() {
                         {bit.date.slice(-8)}
                       </span>
                     </li>
-                    <button className=" ml-6  bg-slate-100 hidden group-hover:block w-8 h-8 rounded-full ">
+                    <button
+                      className=" ml-6  bg-slate-100 hidden group-hover:block w-8 h-8 rounded-full "
+                      onClick={() => deletor.mutate(bit.id)}
+                    >
                       x
                     </button>
                   </div>
@@ -119,40 +89,3 @@ function AppBits() {
     </div>
   );
 }
-
-const fetchUserBits = () =>
-  fetch("/api/bits/user").then(async (res) => {
-    if (res.ok) return res.json();
-    throw new Error(await res.text());
-  });
-
-const fetchCreateBit = (text: string) =>
-  fetch("/api/bits/new", {
-    method: "POST",
-    body: text,
-  }).then(async (res) => {
-    if (res.ok) return res.text();
-    throw new Error(await res.text());
-  });
-
-const localKey = "pushbullet-cache";
-
-const loadFromLocalStorage = () => {
-  if (typeof window === "undefined") return null;
-  const str = localStorage.getItem(localKey);
-  if (!str) return null;
-  try {
-    return JSON.parse(str);
-  } catch (e) {
-    return null;
-  }
-};
-
-const saveToLocalStorage = (data: object | null) => {
-  if (typeof window === "undefined") return null;
-  if (data === null) {
-    localStorage.removeItem(localKey);
-    return;
-  }
-  localStorage.setItem(localKey, JSON.stringify(data));
-};

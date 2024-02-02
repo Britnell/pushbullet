@@ -36,7 +36,7 @@ function AppBits() {
     },
   });
 
-  const create = useMutation({
+  const creator = useMutation({
     mutationKey: "create",
     mutationFn: fetchCreateBit,
     onSuccess: (_, data) => {
@@ -54,7 +54,7 @@ function AppBits() {
     const form = ev.target as HTMLFormElement;
     const text = form.text.value;
     if (text === "") return;
-    create.mutate(text);
+    creator.mutate(text);
   };
 
   useLayoutEffect(() => {
@@ -81,12 +81,17 @@ function AppBits() {
                       {date}
                     </p>
                   )}
-                  <li className=" mb-6 bg-blue-200 p-2 pl-6 pr-6 rounded-xl w-fit">
-                    {bit.text}{" "}
-                    <span className=" ml-6 text-[0.7em]">
-                      {bit.date.slice(-8)}
-                    </span>
-                  </li>
+                  <div className="mb-6 group flex items-center  ">
+                    <li className="  bg-blue-200 p-2 pl-6 pr-6 rounded-xl w-fit">
+                      {bit.text}{" "}
+                      <span className=" ml-6 text-[0.7em]">
+                        {bit.date.slice(-8)}
+                      </span>
+                    </li>
+                    <button className=" ml-6  bg-slate-100 hidden group-hover:block w-8 h-8 rounded-full ">
+                      x
+                    </button>
+                  </div>
                 </Fragment>
               );
             })}

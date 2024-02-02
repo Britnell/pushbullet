@@ -115,32 +115,35 @@ const RenderHyperlinks = ({ text }: { text: string }) => {
     links.push({ start, end });
   }
 
-  return (
-    <>
-      {links.map(({ start, end }, i) => {
-        const link = text.slice(start, end);
-        let before = null;
-        if (i === 0) before = text.slice(0, start);
-        else {
-          before = text.slice(links[i - 1].end, start);
-        }
-        const after = i === links.length - 1 && text.slice(end);
+  console.log({ links });
 
-        return (
-          <>
-            {before}
-            <a
-              className=" underline"
-              href={link}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {link}
-            </a>
-            {after}
-          </>
-        );
-      })}
-    </>
+  return (
+    <span>
+      {links.length === 0 ? (
+        <>{text}</>
+      ) : (
+        links.map((match, i) => {
+          const link = text.slice(match.start, match.end);
+          const beforeBegin = i === 0 ? 0 : links[i - 1].end;
+          const beforeLink = text.slice(beforeBegin, match.start);
+          const afterLink = i === links.length - 1 && text.slice(match.end);
+
+          return (
+            <>
+              {beforeLink}
+              <a
+                className=" underline"
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link}
+              </a>
+              {afterLink}
+            </>
+          );
+        })
+      )}
+    </span>
   );
 };

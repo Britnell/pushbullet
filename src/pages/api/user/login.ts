@@ -41,7 +41,4 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       "Set-Cookie": cookie,
     },
   });
-
-  return redirect("/user/login");
-  return new Response("never");
 };

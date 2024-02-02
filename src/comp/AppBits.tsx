@@ -29,7 +29,6 @@ function AppBits() {
     // cacheTime: Infinity,
     initialData: () => {
       const local = loadFromLocalStorage();
-      console.log({ local });
       return local ?? [];
     },
     onSuccess: (data) => {
@@ -79,12 +78,12 @@ function AppBits() {
               return (
                 <Fragment key={b}>
                   {showDate && (
-                    <p className=" mt-10 mb-6 text-gray-500 text-center ">
-                      {bit.date}
+                    <p className="  mt-10 mb-6 text-gray-500 text-center  border-b-2 border-gray-300 pb-2">
+                      {date}
                     </p>
                   )}
                   <li className=" mb-6 bg-blue-200 p-2 px-10 rounded-xl w-fit">
-                    {bit.text} - <span className=" ">{bit.date}</span>
+                    {bit.text}
                   </li>
                 </Fragment>
               );
@@ -99,10 +98,10 @@ function AppBits() {
       </div>
       <form
         onSubmit={submit}
-        className=" pt-1 px-8 flex flex-wrap items-start gap-3 shadow-[0px_0px_10px_rgba(0,0,0,0.3)]"
+        className=" p-1 flex flex-wrap items-start gap-3 shadow-[0px_0px_10px_rgba(0,0,0,0.3)]"
       >
         <textarea
-          className=" border border-gray-300 rounded-sm px-2 py-1 w-full max-w-[600px]"
+          className="  rounded-sm px-2 py-1 w-full max-w-[600px]"
           name="text"
           rows={3}
           placeholder="Your new Bit..."

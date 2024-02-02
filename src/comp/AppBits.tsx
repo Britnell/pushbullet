@@ -1,4 +1,4 @@
-import type { FormEvent } from "react";
+import { useRef, type FormEvent, useLayoutEffect, Fragment } from "react";
 import {
   useQuery,
   QueryClient,
@@ -22,6 +22,8 @@ export type Bits = {
 };
 
 function AppBits() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const query = useQuery<Bits[], string>("bits", fetchUserBits, {
     // staleTime: Infinity,
     // cacheTime: Infinity,
@@ -56,11 +58,17 @@ function AppBits() {
     create.mutate(text);
   };
 
+  useLayoutEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, []);
   let lastDate = "";
+
   return (
     <div className=" h-[calc(100dvh-64px)] flex flex-col ">
       <h2>Your Bits</h2>
-      <div className=" grow  overflow-auto">
+      <div ref={scrollRef} className=" grow  overflow-auto">
         {query.data && (
           <ul className=" flex flex-col ">
             {query.data.map((bit, b) => {
@@ -69,22 +77,16 @@ function AppBits() {
               const showDate = date !== lastDate;
               lastDate = date;
               return (
-                <>
+                <Fragment key={b}>
                   {showDate && (
-                    <p
-                      key={`date-${b}`}
-                      className=" mt-10 mb-6 text-gray-500 text-center "
-                    >
+                    <p className=" mt-10 mb-6 text-gray-500 text-center ">
                       {bit.date}
                     </p>
                   )}
-                  <li
-                    key={b}
-                    className=" mb-6 bg-blue-200 p-2 px-10 rounded-xl w-fit"
-                  >
+                  <li className=" mb-6 bg-blue-200 p-2 px-10 rounded-xl w-fit">
                     {bit.text} - <span className=" ">{bit.date}</span>
                   </li>
-                </>
+                </Fragment>
               );
             })}
           </ul>

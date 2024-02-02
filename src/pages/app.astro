@@ -1,4 +1,6 @@
 ---
+import Layout from "../layout/page.astro";
+
 import AppBits from "../comp/AppBits.tsx";
 import { checkUserCookie, getCookieUser } from "../lib/auth";
 
@@ -12,18 +14,20 @@ const [user] = await getCookieUser(cookieUser.userid, cookieUser.email);
 if (!user || !user.userid) return Astro.redirect("/user/login");
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div class="mx-auto max-w-[900px] px-6 sm:px-8">
-      <h1>Pushbullet</h1>
-      <a href="/api/user/logout">Sign out</a>
+<Layout>
+  <div>
+    <header>
+      <div class="bg-blue-300">
+        <div
+          class="h-12 mx-auto max-w-[900px] px-6 sm:px-8 flex items-center justify-between"
+        >
+          <h1>Pushbullet</h1>
+          <a href="/api/user/logout">Sign out</a>
+        </div>
+      </div>
+    </header>
+    <main class="mx-auto max-w-[900px] px-6 sm:px-8">
       <AppBits client:only />
-    </div>
-  </body>
-</html>
+    </main>
+  </div>
+</Layout>

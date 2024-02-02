@@ -65,11 +65,10 @@ function AppBits() {
   let lastDate = "";
 
   return (
-    <div className=" h-[calc(100dvh-64px)] flex flex-col ">
-      <h2>Your Bits</h2>
+    <div className=" h-[calc(100dvh-48px)] flex flex-col ">
       <div ref={scrollRef} className=" grow  overflow-auto">
         {query.data && (
-          <ul className=" flex flex-col ">
+          <ul>
             {query.data.map((bit, b) => {
               // only render new dates
               const date = bit.date.split(" ")[0];
@@ -82,8 +81,11 @@ function AppBits() {
                       {date}
                     </p>
                   )}
-                  <li className=" mb-6 bg-blue-200 p-2 px-10 rounded-xl w-fit">
-                    {bit.text}
+                  <li className=" mb-6 bg-blue-200 p-2 pl-6 pr-6 rounded-xl w-fit">
+                    {bit.text}{" "}
+                    <span className=" ml-6 text-[0.7em]">
+                      {bit.date.slice(-8)}
+                    </span>
                   </li>
                 </Fragment>
               );
@@ -96,17 +98,18 @@ function AppBits() {
           </div>
         )}
       </div>
-      <form
-        onSubmit={submit}
-        className=" p-1 flex flex-wrap items-start gap-3 shadow-[0px_0px_10px_rgba(0,0,0,0.3)]"
-      >
-        <textarea
-          className="  rounded-sm px-2 py-1 w-full max-w-[600px]"
-          name="text"
-          rows={3}
-          placeholder="Your new Bit..."
-        />
-        <button className=" bg-blue-200 rounded-full px-4 py-1">Submit</button>
+      <form onSubmit={submit}>
+        <div className="shadowclip p-1 flex flex-wrap items-start gap-3 shadow-[0px_0px_10px_rgba(0,0,0,0.3)] clip">
+          <textarea
+            className="  rounded-sm px-2 py-1 w-full max-w-[600px]"
+            name="text"
+            rows={3}
+            placeholder="Your new Bit..."
+          />
+          <button className=" bg-blue-200 rounded-full px-4 py-1">
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .shadowclip {
+    clip-path: polygon(0 -30px, 100% -30px, 100% 100%, 0 100%);
+  }
+}

@@ -50,16 +50,11 @@ function AppBits() {
 
   const submit = (ev: FormEvent) => {
     ev.preventDefault();
-
     const form = ev.target as HTMLFormElement;
     const text = form.text.value;
     if (text === "") return;
-
-    console.log({ text });
     create.mutate(text);
   };
-
-  console.log(query);
 
   return (
     <div>
@@ -78,7 +73,6 @@ function AppBits() {
           <p>ERROR - {query.error}</p>
         </div>
       )}
-      {/* <NewBit /> */}
       <form onSubmit={submit}>
         <textarea name="text" rows={3} />
         <button>Submit</button>

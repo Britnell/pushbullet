@@ -20,8 +20,6 @@ export const useBits = () =>
         if (res.ok) return res.json();
         throw new Error(await res.text());
       }),
-    // staleTime: Infinity,
-    // cacheTime: Infinity,
     initialData: () => {
       const local = loadFromLocalStorage();
       return local ?? [];

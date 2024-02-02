@@ -1,4 +1,4 @@
-import { useRef, type FormEvent, useLayoutEffect, Fragment } from "react";
+import { useRef, useLayoutEffect, Fragment, useState } from "react";
 import { QueryProvidor, useBits, useCreator, useDeletor } from "../lib/query";
 
 export default function Wrapper() {
@@ -11,17 +11,16 @@ export default function Wrapper() {
 
 function AppBits() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [input, setInput] = useState("");
 
   const query = useBits();
   const creator = useCreator();
   const deletor = useDeletor();
 
-  const submit = (ev: FormEvent) => {
-    ev.preventDefault();
-    const form = ev.target as HTMLFormElement;
-    const text = form.text.value;
-    if (text === "") return;
-    creator.mutate(text);
+  const submit = () => {
+    if (input === "") return;
+    creator.mutate(input);
+    setInput("");
   };
 
   useLayoutEffect(() => {
@@ -73,13 +72,23 @@ function AppBits() {
           </div>
         )}
       </div>
-      <form onSubmit={submit}>
+      <form
+        onSubmit={(ev) => {
+          ev.preventDefault();
+          submit();
+        }}
+      >
         <div className="shadowclip p-1 flex flex-wrap items-start gap-3 shadow-[0px_0px_10px_rgba(0,0,0,0.3)] clip">
           <textarea
             className="  rounded-sm px-2 py-1 w-full max-w-[600px]"
             name="text"
             rows={3}
             placeholder="Your new Bit..."
+            value={input}
+            onChange={(ev) => setInput(ev.target.value)}
+            onKeyDown={(ev) => {
+              if (ev.code === "Enter") submit();
+            }}
           />
           <button className=" bg-blue-200 rounded-full px-4 py-1">
             Submit

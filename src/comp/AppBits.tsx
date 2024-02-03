@@ -36,7 +36,7 @@ function AppBits() {
         {query.data && (
           <ul>
             {query.data.map((bit) => {
-              // only render new dates
+              // Render dates
               const date = bit.date.split(" ")[0];
               const showDate = date !== lastDate;
               lastDate = date;

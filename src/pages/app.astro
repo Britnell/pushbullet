@@ -1,6 +1,7 @@
 ---
 import Layout from "../layout/page.astro";
 import AppBits from "../comp/AppBits";
+import Header from "../layout/header.astro";
 
 import { checkUserCookie, getCookieUser } from "../lib/auth";
 
@@ -16,16 +17,9 @@ if (!user || !user.userid) return Astro.redirect("/user/login");
 
 <Layout>
   <div>
-    <header>
-      <div class="bg-blue-300">
-        <div
-          class="h-12 mx-auto max-w-[900px] px-6 sm:px-8 flex items-center justify-between"
-        >
-          <h1>Pushbullet</h1>
-          <a href="/api/user/logout">Sign out</a>
-        </div>
-      </div>
-    </header>
+    <Header>
+      <a href="/api/user/logout">Sign out</a>
+    </Header>
     <main class="mx-auto max-w-[900px] px-6 sm:px-8">
       <AppBits client:only />
     </main>

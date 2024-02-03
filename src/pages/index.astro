@@ -1,5 +1,5 @@
 ---
-
+import Header from "../layout/header.astro";
 ---
 
 <html lang="en">
@@ -12,7 +12,9 @@
   </head>
   <style is:global></style>
   <body>
+    <Header>
+      <a href="/user/login">Login</a>
+    </Header>
     <h1>Welcome</h1>
-    <a href="/user/login">Login</a>
   </body>
 </html>

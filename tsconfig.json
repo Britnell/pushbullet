@@ -6,7 +6,7 @@
     "types": [
       "vite-plugin-pwa/info.d.ts",
       "vite-plugin-pwa/client.d.ts",
-      "vite-plugin-pwa/register.d.ts"
+      "vite-plugin-pwa/vanilla.d.ts"
     ]
   }
 }

@@ -4,10 +4,5 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react"
   },
-  "include": [
-    "astro/client",
-    "vite-plugin-pwa/vanillajs",
-    "vite-plugin-pwa/info",
-    "vite-plugin-pwa/client"
-  ]
+  "include": ["env.d.ts"]
 }

@@ -4,9 +4,9 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "types": [
-      "vite-plugin-pwa/info",
-      "vite-plugin-pwa/client",
-      "vite-plugin-pwa/react"
+      "vite-plugin-pwa/info.d.ts",
+      "vite-plugin-pwa/client.d.ts",
+      "vite-plugin-pwa/register.d.ts"
     ]
   }
 }

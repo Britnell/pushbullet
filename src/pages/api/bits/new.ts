@@ -30,6 +30,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   if (!user) return redirect("/");
 
   const [created] = await createNewBit(userid, text);
+  console.log(created);
 
   if (created) return new Response(JSON.stringify(created), { status: 200 });
 

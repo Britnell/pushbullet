@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { db } from "./turso";
+import db from "./turso";
 import { SignJWT, jwtVerify } from "jose";
 import { text, integer, sqliteTable } from "drizzle-orm/sqlite-core";
 import { and, eq } from "drizzle-orm";
@@ -90,13 +90,6 @@ export const signupUser = async ({
   const hashed = hashPassword(password);
   if (!hashed) return null;
 
-  // return turso.execute({
-  //   sql: `INSERT INTO users (email, username, password)
-  //       VALUES (?, ?, ?)
-  //       ON CONFLICT(email) DO NOTHING;
-  //       `,
-  //   args: [email, username, hashed],
-  // });
   return db.insert(users).values({
     email,
     username,

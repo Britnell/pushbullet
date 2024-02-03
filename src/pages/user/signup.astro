@@ -1,28 +1,52 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>signup</h1>
+---
+import Page from "../../layout/page.astro";
+import Header from "../../layout/header.astro";
+---
+
+<Page>
+  <Header>
+    <a href="/">App</a>
+  </Header>
+  <main class="mx-auto max-w-[900px] px-6 sm:px-8">
+    <h1 class="mt-10 mb-6 text-xl font-bold text-center">
+      Sign Up to Pushbullet
+    </h1>
 
     <form method="POST" action="/api/user/signup">
-      <label
-        >email
-        <input type="email" name="email" />
-      </label>
-      <label
-        >username
-        <input type="text" name="username" />
-      </label>
-
-      <label
-        >password
-        <input type="password" name="password" />
-      </label>
-      <button>Submit</button>
+      <div class="grid grid-cols-[100px_360px] gap-x-3 gap-y-2 justify-center">
+        <label for="email">Email :</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Email..."
+          class="border border-slate-200 rounded-md py-1 px-2"
+        />
+        <label for="username">Username :</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Username..."
+          class="border border-slate-200 rounded-md py-1 px-2"
+        />
+        <label for="password">Password :</label>
+        <input
+          type="text"
+          id="password"
+          name="password"
+          placeholder="Password..."
+          class="border border-slate-200 rounded-md py-1 px-2"
+        />
+        <div></div>
+        <button class="py-1 bg-blue-100 rounded-full">Submit</button>
+      </div>
     </form>
-  </body>
-</html>
+    <p class="mt-12 text-center">
+      Already have an account? then <a
+        class="underline text-blue-600"
+        href="/user/login">log in here</a
+      >
+    </p>
+  </main>
+</Page>

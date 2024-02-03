@@ -1,9 +1,19 @@
 import bcrypt from "bcryptjs";
-import { turso } from "./turso";
+import { db } from "./turso";
 import { SignJWT, jwtVerify } from "jose";
+import { text, integer, sqliteTable } from "drizzle-orm/sqlite-core";
+import { and, eq } from "drizzle-orm";
 
 const JWT_NAME = import.meta.env.JWT_NAME;
 const JWT_SECRET = import.meta.env.JWT_SECRET;
+
+export const users = sqliteTable("users", {
+  userid: integer("userid").primaryKey(),
+  email: text("email").notNull().unique(),
+  password: text("password").notNull(),
+  username: text("username").notNull(),
+  created: text("created").default("CURRENT_DATE"),
+});
 
 export const getUserSigninCookie = async (user: object) => {
   const jwt = await createJWT(user);
@@ -45,18 +55,23 @@ export const validateJWT = async (jwt: string) =>
   );
 
 export const getEmailUser = (email: string) =>
-  turso.execute({
-    sql: ` select userid,email,password from users where email = ?`,
-    args: [email],
-  });
+  db
+    .select({
+      userid: users.userid,
+      email: users.email,
+      password: users.password,
+    })
+    .from(users)
+    .where(eq(users.email, email));
 
 export const getCookieUser = (userid: number, email: string) =>
-  turso
-    .execute({
-      sql: ` select userid,email,password from users where email = ? and userid = ?`,
-      args: [email, userid],
+  db
+    .select({
+      userid: users.userid,
+      email: users.email,
     })
-    .then((resp) => resp.rows);
+    .from(users)
+    .where(and(eq(users.email, email), eq(users.userid, userid)));
 
 export const hashPassword = (pw: string) => bcrypt.hashSync(pw, 10);
 
@@ -75,11 +90,16 @@ export const signupUser = async ({
   const hashed = hashPassword(password);
   if (!hashed) return null;
 
-  return turso.execute({
-    sql: `INSERT INTO users (email, username, password)
-        VALUES (?, ?, ?)
-        ON CONFLICT(email) DO NOTHING;
-        `,
-    args: [email, username, hashed],
+  // return turso.execute({
+  //   sql: `INSERT INTO users (email, username, password)
+  //       VALUES (?, ?, ?)
+  //       ON CONFLICT(email) DO NOTHING;
+  //       `,
+  //   args: [email, username, hashed],
+  // });
+  return db.insert(users).values({
+    email,
+    username,
+    password: hashed,
   });
 };

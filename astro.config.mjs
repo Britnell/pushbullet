@@ -46,10 +46,10 @@ export default defineConfig({
         navigateFallback: "/",
         globPatterns: ["**/*.{css,js,html,svg,png,ico,txt}"],
       },
-      devOptions: {
-        enabled: true,
-        navigateFallbackAllowlist: [/^\//],
-      },
+      // devOptions: {
+      //   enabled: false,
+      //   navigateFallbackAllowlist: [/^\//],
+      // },
       experimental: {
         directoryAndTrailingSlashHandler: true,
       },

@@ -1,4 +1,7 @@
-import { turso } from "./turso";
+import { eq } from "drizzle-orm";
+import { users } from "./auth";
+import { turso, db } from "./turso";
+import { text, integer, sqliteTable } from "drizzle-orm/sqlite-core";
 
 export type Bits = {
   id: number;
@@ -6,16 +9,24 @@ export type Bits = {
   date: string;
 };
 
-export const getUserBits = (userid: string) =>
-  turso
-    .execute({
-      sql: `select id,text,date
-      from bits 
-      where userid = ?
-      order by date ASC`,
-      args: [userid],
+export const bits = sqliteTable("bits", {
+  id: integer("id").primaryKey(),
+  userid: integer("userid").references(() => users.userid),
+  date: text("date").default("CURRENT_TIMESTAMP"),
+  text: text("text"),
+  url: text("url"),
+});
+
+export const getUserBits = (userid: number) =>
+  db
+    .select({
+      id: bits.id,
+      text: bits.text,
+      date: bits.date,
     })
-    .then((resp) => resp.rows);
+    .from(bits)
+    .where(eq(bits.userid, userid))
+    .orderBy(bits.date);
 
 export const createNewBit = (userid: number, text: string) =>
   turso

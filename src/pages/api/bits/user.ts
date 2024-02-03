@@ -22,7 +22,7 @@ export const GET: APIRoute = async ({ request }) => {
   const [user] = await getCookieUser(userid, email);
   if (!user) return error;
 
-  const bits = await getUserBits(userid.toString());
+  const bits = await getUserBits(userid);
 
   return new Response(JSON.stringify(bits), {
     status: 200,

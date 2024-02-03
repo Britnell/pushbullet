@@ -19,12 +19,12 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
   if (!email || !password) return new Response(" boo");
 
-  const resp = await getEmailUser(email);
+  const rows = await getEmailUser(email);
 
-  if (resp.rows.length === 0) return redirect("/user/login");
+  if (rows.length === 0) return redirect("/user/login");
 
-  const userid = resp.rows[0].userid;
-  const hash = resp.rows[0].password;
+  const userid = rows[0].userid;
+  const hash = rows[0].password;
 
   if (!hash) return redirect("/user/login");
 

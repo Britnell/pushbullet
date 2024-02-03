@@ -12,6 +12,7 @@ const cookieUser = await checkUserCookie(jwt);
 if (!cookieUser) return Astro.redirect("/user/login");
 
 const [user] = await getCookieUser(cookieUser.userid, cookieUser.email);
+
 if (!user || !user.userid) return Astro.redirect("/user/login");
 ---
 

@@ -22,9 +22,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     username,
   });
 
-  if (!resp) return redirect("/user/login");
-
-  if (resp.rowsAffected === 1) return redirect("/user/login");
+  if (resp?.rowsAffected === 1) return redirect("/user/login");
 
   return redirect("/user/signup");
 };

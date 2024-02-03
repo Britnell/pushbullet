@@ -2,6 +2,11 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsxImportSource": "react",
+    "types": [
+      "vite-plugin-pwa/info",
+      "vite-plugin-pwa/client",
+      "vite-plugin-pwa/react"
+    ]
   }
 }

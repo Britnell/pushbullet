@@ -11,21 +11,21 @@ export const GET: APIRoute = () => {
 
 export const POST: APIRoute = async ({ request, redirect }) => {
   const cookieString = request.headers.get("cookie");
-  if (!cookieString) return redirect("/app");
+  if (!cookieString) return redirect("/");
 
   const bitid = await request.text();
-  if (!bitid) return redirect("/app");
+  if (!bitid) return redirect("/");
 
   const cookies = cookieParser(cookieString);
   const jwt = cookies.get(JWT_NAME);
 
   const cookieUser = await checkUserCookie(jwt);
-  if (!cookieUser) return redirect("/app");
+  if (!cookieUser) return redirect("/");
 
   const { userid, email } = cookieUser;
 
   const [user] = await getCookieUser(userid, email);
-  if (!user) return redirect("/app");
+  if (!user) return redirect("/");
 
   const success = await deleteUserBit(userid.toString(), bitid);
   if (success) return new Response("ok", { status: 200 });

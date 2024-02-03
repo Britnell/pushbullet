@@ -37,7 +37,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   return new Response(null, {
     status: 301,
     headers: {
-      Location: "/app",
+      Location: "/",
       "Set-Cookie": cookie,
     },
   });

@@ -20,8 +20,6 @@ if (!user || !user.userid) return Astro.redirect("/user/login");
     <Header>
       <a href="/api/user/logout">Sign out</a>
     </Header>
-    <main class="mx-auto max-w-[900px] px-6 sm:px-8">
-      <AppBits client:only />
-    </main>
+    <AppBits client:only />
   </div>
 </Layout>

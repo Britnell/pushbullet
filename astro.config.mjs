@@ -5,8 +5,8 @@ import netlify from "@astrojs/netlify";
 import AstroPWA from "@vite-pwa/astro";
 
 const manifest = {
-  name: "Astro PWA",
-  short_name: "Astro PWA",
+  name: "Pushbullet",
+  short_name: "Pushbullet",
   theme_color: "#ffffff",
   icons: [
     {

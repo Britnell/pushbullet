@@ -36,7 +36,7 @@ export default defineConfig({
     react(),
     tailwind(),
     AstroPWA({
-      mode: "development",
+      mode: "production",
       base: "/",
       scope: "/",
       includeAssets: ["favicon.svg"],

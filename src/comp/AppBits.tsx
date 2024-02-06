@@ -32,7 +32,7 @@ function AppBits() {
   let lastDate = "";
 
   return (
-    <main class="mx-auto max-w-[900px] px-6 sm:px-8">
+    <main className="mx-auto max-w-[900px] px-6 sm:px-8">
       <div className=" h-[calc(100dvh-48px)] flex flex-col ">
         <div ref={scrollRef} className=" grow  overflow-auto">
           {query.data && (

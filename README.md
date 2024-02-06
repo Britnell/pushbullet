@@ -1,9 +1,11 @@
 # Pushbullet Clone
 
-This is a fullstack astro app, because there is no pushbullet on iOS, and as practice
+This is a fullstack astro app
+because there is no pushbullet on iOS, and as practice
 
 - Astro
 - turso SQLite
+- drizzle
 - React
 - react-query
 - PWA & sharing api

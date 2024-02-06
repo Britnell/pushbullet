@@ -44,12 +44,14 @@ export default defineConfig({
       manifest,
       workbox: {
         navigateFallback: "/",
+        // navigateFallbackDenylist: [/\/alpine/],
         globPatterns: ["**/*.{css,js,html,svg,png,ico,txt}"],
       },
-      // devOptions: {
-      //   enabled: false,
-      //   navigateFallbackAllowlist: [/^\//],
-      // },
+      devOptions: {
+        enabled: false,
+        // navigateFallbackDenylist: [/\/alpine/],
+        navigateFallbackAllowlist: [/^\//],
+      },
       experimental: {
         directoryAndTrailingSlashHandler: true,
       },

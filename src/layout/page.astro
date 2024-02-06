@@ -1,6 +1,7 @@
 ---
 import { pwaInfo } from "virtual:pwa-info";
 import "../layout/global.scss";
+// import { ViewTransitions } from "astro:transitions";
 ---
 
 <!doctype html>
@@ -12,6 +13,7 @@ import "../layout/global.scss";
 
     {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
     <script src="/src/pwa.ts"></script>
+    <!-- <ViewTransitions /> -->
   </head>
   <body>
     <slot />

@@ -14,7 +14,6 @@ const [user] = await getCookieUser(cookieUser.userid, cookieUser.email);
 if (!user || !user.userid) return Astro.redirect("/user/login");
 
 const bits = await getUserBits(user.userid);
-console.log(bits[0]);
 ---
 
 <!doctype html>

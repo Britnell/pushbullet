@@ -3,7 +3,7 @@ import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import netlify from "@astrojs/netlify";
 import AstroPWA from "@vite-pwa/astro";
-
+import vue from "@astrojs/vue";
 const manifest = {
   name: "Pushbullet",
   short_name: "Pushbullet",
@@ -34,6 +34,7 @@ export default defineConfig({
   adapter: netlify(),
   integrations: [
     react(),
+
     tailwind(),
     AstroPWA({
       mode: "production",
@@ -55,6 +56,9 @@ export default defineConfig({
       experimental: {
         directoryAndTrailingSlashHandler: true,
       },
+    }),
+    vue({
+      include: ["src/vue/*"],
     }),
   ],
 });
